@@ -1,0 +1,24 @@
+* Notes
+** 5 entities
+*** trusts ->
+**** where you can touch me
+**** how work with me
+**** things i dont like friend
+*** i like, dislike (examples)
+**** i like alchool
+*** cualities (examples)
+**** what you can make when i am when I'm drunk
+*** persons
+**** name , pronouns...
+*** login
+**** username
+**** password
+**** key -> hash-> incrementador
+*** acces to profiles and trust indicator 
+****  hash
+*** bad siuations
+
+
+
+** references
+https://www.youtube.com/watch?v=ifu55TGww5Y

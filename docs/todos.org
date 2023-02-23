@@ -1,0 +1,5 @@
+* TODO´S
+** create data base 
+*** spark
+*** mongo
+*** DONE sql
