@@ -7,8 +7,10 @@ MyManual - 2023 - by [jero98772,jhonmesa]
 from flask import request
 from hashlib import  sha256
 import base64
-from Crypto import Random
+
 from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import base64
 
 def multrequest(items):	
 	values = []
@@ -89,3 +91,30 @@ def concatenateStrInList(arr):
 	for i in arr:
 		intAsString += i
 	return int(intAsString)
+
+def encrypt(message, key):
+	"""
+	Encrypt a message using AES in CBC mode
+	"""
+	cipher = AES.new(key, AES.MODE_CBC)
+	ciphertext_bytes = cipher.encrypt(pad(message.encode(), AES.block_size))
+	iv = base64.b64encode(cipher.iv).decode('utf-8')
+	ciphertext = base64.b64encode(ciphertext_bytes).decode('utf-8')
+	return iv, ciphertext
+
+def decrypt(ciphertext, key, iv):
+	"""
+	Decrypt a message using AES in CBC mode
+	"""
+	cipher = AES.new(key, AES.MODE_CBC, iv=base64.b64decode(iv))
+	ciphertext_bytes = base64.b64decode(ciphertext)
+	plaintext_bytes = unpad(cipher.decrypt(ciphertext_bytes), AES.block_size)
+	plaintext = plaintext_bytes.decode('utf-8')
+	return plaintext
+
+"""
+key = b'Sixteen byte key'
+message = 'Hello, world!'
+iv, ciphertext = encrypt(message, key)
+decrypted_message = decrypt(ciphertext, key, iv)
+"""

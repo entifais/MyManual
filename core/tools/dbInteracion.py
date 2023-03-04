@@ -14,11 +14,11 @@ class dbInteracion():
 		self.cursor = self.connecting.cursor()
 		return self.cursor
 	def userAvailable(self,user,pwd,item="usr"):
-		dbcomand =  "SELECT * FROM {0} WHERE {1} =  '{2}' ".format(self.tableName,item,user)
+		dbcomand =  "SELECT {1} FROM {0} WHERE {1} =  '{2}' ".format(self.tableName,item,user)
 		self.cursor.execute(dbcomand)
 		users = self.cursor.fetchall()
-		print(users)
-		if (user in users) and (pwd in users):
+		if (user in users[0]) :
+			print("tr")
 			return False
 		else:
 			return True

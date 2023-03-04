@@ -10,7 +10,7 @@ from .tools.tools import *
 app = Flask(__name__)
 app.secret_key = str(enPassowrdHash(generatePassword()))
 DBPATH = "data/"
-DBNAMESQL = DBPATH + "sql"
+DBNAMESQL = DBPATH + "dbsql"
 DBNAMESPARK = DBPATH + "spark"
 DBNAMESMONGO = DBPATH + "mongo"
 TABLE = ""#put table name here
@@ -25,18 +25,21 @@ class webpage():
 			pwd2 = request.form["pwd2"]
 			if pwd == pwd2 :
 				usr = request.form["usr"]
-				db = dbInteracion(DBNAMEGAS)
-				db.connect(GASLOGINTABLE)
+				db = dbInteracion(DBNAMESQL)
+				db.connect(LOGINTABLE)
 				if db.userAvailable(usr,"usr") :
+					print("is ab")
 					encpwd = enPassowrdStrHex(pwd+usr) 
 					db.saveUser(usr,enPassowrdStrHex(pwd))
 					try:
-						db.createUser(usr)
+						#db.createUser(usr)
 						session['loged'] = True
 						session['user'] = usr
 						session['encpwd'] = encpwd
 					except db.userError():
 						return "invalid user , please try with other username and password"		
+				else:
+					return "invalid user , username have been taked"		
 		return render_template("user_register.html")
 	@app.route(WEBPAGE)
 	def info():

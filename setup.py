@@ -14,6 +14,6 @@ setup(
 	description='',
 	url='',
 	packages=find_packages(),
-    install_requires=['Flask','pycrypto'],
+    install_requires=['Flask','pycrypto','Crypto'],
     include_package_data=True,
 	)
