@@ -18,6 +18,9 @@ LOGINTABLE = "login"
 DATANAMEGAS = ["item","category","thread","price","amount","date"]
 class webpage():
 	WEBPAGE = "/"
+	@app.route(WEBPAGE+"info.html")
+	def info():
+		return render_template("info.html")
 	@app.route(WEBPAGE+"user_register.html", methods = ['GET','POST'])
 	def register():
 		if request.method == 'POST':
@@ -28,11 +31,9 @@ class webpage():
 				db = dbInteracion(DBNAMESQL)
 				db.connect(LOGINTABLE)
 				if db.userAvailable(usr,"usr") :
-					print("is ab")
 					encpwd = enPassowrdStrHex(pwd+usr) 
 					db.saveUser(usr,enPassowrdStrHex(pwd))
 					try:
-						#db.createUser(usr)
 						session['loged'] = True
 						session['user'] = usr
 						session['encpwd'] = encpwd
@@ -41,59 +42,38 @@ class webpage():
 				else:
 					return "invalid user , username have been taked"		
 		return render_template("user_register.html")
-	@app.route(WEBPAGE)
-	def info():
-		return render_template("info.html")
-	@app.route(WEBPAGE+"main.html", methods = ['GET','POST'])
-	def main():
-		priceCol = "price"
-		data = []
-		db = dbInteracion(DBNAME)
-		timenow = hoyminsStr()
-		if not session.get('loged'):
-			return render_template('login.html')	
-		else:
-			user = session.get('user')
-			encpwd = session.get('encpwd')
-			db.connect(TABLEGAS+user)
-			item_id =  db.getID()
-			rows = db.getDataGas()
-			keys = len(DATANAMEGAS)*[encpwd]
-			pricesum = 0
-			decdata =[]
-			i = 0
-			for row in rows:
-				decdata.append([concatenateStrInList(item_id[i])]+list(map(decryptAES,row,keys)))
-				pricesum += float(decdata[i][4])*float(decdata[i][5])
-				i += 1
-			try :
-				priceavg = pricesum / len(rows)
-			except :
-				priceavg = "no data" 
-			if request.method == 'POST':
-				data = multrequest(DATANAMEGAS)
-				data = list(map(encryptAES , data, keys))
-				data = list(map(str , data))
-				db.addGas(DATANAMEGAS,data)
-				return redirect("gas.html")
-			return render_template("gas.html",purchases = decdata,now=timenow,sum=pricesum,avg=priceavg)	
-
 	@app.route(WEBPAGE+"login.html", methods=['GET', 'POST'])
 	def login():	
 		usr = request.form['username']
 		pwd = request.form["password"]
 		encpwd = enPassowrdStrHex(pwd+usr)
 		protectpwd = enPassowrdStrHex(pwd)
-		db = dbInteracion(DBNAMEGAS)
-		db.connect(GASLOGINTABLE)
+		db = dbInteracion(DBNAMESQL)
+		db.connect(LOGINTABLE)
 		if db.findUser(usr) and db.findPassword(protectpwd)  :
 			session['loged'] = True
 			session['user'] = usr
 			session['encpwd'] = encpwd
-			return redirect("/gas.html")
+			return redirect("/main.html")
 		else:
 			flash('wrong password!')
-		return gas.gas()
+		return webpage.main()
+	@app.route(WEBPAGE, methods = ['GET','POST'])
+	@app.route(WEBPAGE+"main.html", methods = ['GET','POST'])
+	def main():
+		db = dbInteracion(LOGINTABLE)
+		if not session.get('loged'):
+			return render_template('login.html')	
+		else:
+			
+			return render_template("main.html")	
+	@app.route(WEBPAGE+"trustslevels.html",)
+	def trustslevels():
+		return render_template("trustslevels.html")	
+	@app.route(WEBPAGE+"trustslevel1.html", methods = ['GET','POST'])
+	def trustslevels1():
+		#if request.method == "POST":
+		return render_template("trustslevel1.html")	
 	@app.route(WEBPAGE+'gas/actualisar<string:id>', methods = ['GET','POST'])
 	def update(id):
 		user = session.get('user')

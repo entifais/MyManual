@@ -6,14 +6,14 @@ MyManual - 2023 - by [jero98772,jhonmesa]
 """
 from setuptools import setup, find_packages
 setup(
-	name='gas',
-	version='2.0.0 beta',
+	name='MyManual',
+	version='1.0.0 beta',
 	license='GPLv3',
 	author_email='jero98772@protonmail.com',
 	author='[jero98772,jhonmesa]',
 	description='',
 	url='',
 	packages=find_packages(),
-    install_requires=['Flask','pycrypto','Crypto'],
+    install_requires=['Flask','pycryptodome','pycryptodomex'],
     include_package_data=True,
 	)

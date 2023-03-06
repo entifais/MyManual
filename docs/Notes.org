@@ -17,8 +17,15 @@
 *** acces to profiles and trust indicator 
 ****  hash
 *** bad siuations
-
-
+** trust levels
+*** 1 for how see me
+-age
+-heigt
+-weight
+*** 2 for people i see very frecuentli
+*** 3 for people I trust
+*** 4 for friends
+*** 5 for very near friends
 
 ** references
 https://www.youtube.com/watch?v=ifu55TGww5Y
