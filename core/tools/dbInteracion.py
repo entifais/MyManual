@@ -56,7 +56,7 @@ class dbInteracion():
 				return False
 		except:
 			return False
-	def getID(self):
+	def get_id(self):
 		dbcomand = " SELECT * FROM {0} ;".format(self.tableName)
 		self.cursor.row_factory = lambda cursor, row: list(str(int(row[0])))#
 		self.cursor.execute(dbcomand)
@@ -77,8 +77,10 @@ class dbInteracion():
 		dbcomand = " DELETE FROM {0} WHERE {1} = {2} ;".format(self.tableName,column,str(equals))
 		self.cursor.execute(dbcomand)
 		self.cursor.connection.commit()
-	def addGas(self,dbItems,data ):
-		dbcomand = str("INSERT INTO {0} {1}  VALUES {2} ;".format(self.tableName,tuple(dbItems),tuple(data)))
+	def insert(self,dbItems,data,table=None):
+		if table:
+			table=self.tableName
+		dbcomand = str("INSERT INTO {0} {1}  VALUES {2} ;".format(tableName,tuple(dbItems),tuple(data)))
 		self.cursor.execute(dbcomand)
 		self.cursor.connection.commit()
 	def getDataGasWhere(self,row,equals):

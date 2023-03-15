@@ -7,15 +7,10 @@ MyManual - 2023 - by [jero98772,jhonmesa]
 from flask import Flask, render_template, request, flash, redirect ,session
 from .tools.dbInteracion import dbInteracion
 from .tools.tools import *
+from .constants_defines import *
 app = Flask(__name__)
 app.secret_key = str(enPassowrdHash(generatePassword()))
-DBPATH = "data/"
-DBNAMESQL = DBPATH + "dbsql"
-DBNAMESPARK = DBPATH + "spark"
-DBNAMESMONGO = DBPATH + "mongo"
-TABLE = ""#put table name here
-LOGINTABLE = "login"
-DATANAMEGAS = ["item","category","thread","price","amount","date"]
+
 class webpage():
 	WEBPAGE = "/"
 	@app.route(WEBPAGE+"info.html")
@@ -33,9 +28,11 @@ class webpage():
 				if db.userAvailable(usr,"usr") :
 					encpwd = enPassowrdStrHex(pwd+usr) 
 					db.saveUser(usr,enPassowrdStrHex(pwd))
+					db.addtouchme()
 					try:
 						session['loged'] = True
 						session['user'] = usr
+						session['id'] = db.get_id()
 						session['encpwd'] = encpwd
 					except db.userError():
 						return "invalid user , please try with other username and password"		
@@ -61,7 +58,6 @@ class webpage():
 	@app.route(WEBPAGE, methods = ['GET','POST'])
 	@app.route(WEBPAGE+"main.html", methods = ['GET','POST'])
 	def main():
-		db = dbInteracion(LOGINTABLE)
 		if not session.get('loged'):
 			return render_template('login.html')	
 		else:
@@ -77,8 +73,12 @@ class webpage():
 		return render_template("trustslevel1.html")	
 	@app.route(WEBPAGE+"touchme.html", methods = ['GET','POST'])
 	def touchme():
-		#if request.method == "POST":
-		return render_template("touchme.html")	
+		if request.method == "POST":
+			values=multrequest(PART_NAME)
+			db = dbInteracion(DBNAMESQL)
+			db.connect(PARTS_TABLE)
+			db.insert(,PART_NAME,str(id)+values)
+		return render_template("touchme.html",part_name=PART_NAME)	
 	@app.route(WEBPAGE+'gas/actualisar<string:id>', methods = ['GET','POST'])
 	def update(id):
 		user = session.get('user')

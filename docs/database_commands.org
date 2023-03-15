@@ -7,4 +7,8 @@ CREATE TABLE login (
 	pwd TEXT
 );
 #+end_src
+** create body parts table
 
+#+begin_src sql
+CREATE TABLE humman_parts (id int REFERENCES login(id)  ,part1 INTEGER, part2 INTEGER,part3 INTEGER, part4 INTEGER, part5 INTEGER, part6 INTEGER, part7 INTEGER, part8 INTEGER);
+#+end_src
