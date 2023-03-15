@@ -67,6 +67,7 @@ class webpage():
 		else:
 			
 			return render_template("main.html")	
+
 	@app.route(WEBPAGE+"trustslevels.html",)
 	def trustslevels():
 		return render_template("trustslevels.html")	
@@ -74,6 +75,10 @@ class webpage():
 	def trustslevels1():
 		#if request.method == "POST":
 		return render_template("trustslevel1.html")	
+	@app.route(WEBPAGE+"touchme.html", methods = ['GET','POST'])
+	def touchme():
+		#if request.method == "POST":
+		return render_template("touchme.html")	
 	@app.route(WEBPAGE+'gas/actualisar<string:id>', methods = ['GET','POST'])
 	def update(id):
 		user = session.get('user')

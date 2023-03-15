@@ -1,0 +1,24 @@
+{% extends  'template.html'%}
+{% block content %}
+{% if session['loged'] %}
+
+<center>
+<form  method="POST">
+<img src="https://wallpaperaccess.com/full/1130830.jpg">
+
+{% for i in range(8) %}
+<h2>who can touch you in part {{ i }}, with trust level of</h2>
+	<section>
+		{% for j in range(5) %}
+			<option>{{ j }}</option>
+		{% endfor %}
+	</section>
+{% endfor %}
+</form>
+</center>
+
+
+{% else %}
+<h1> you need have a account</h1>
+{% endif %}
+{% endblock %}
