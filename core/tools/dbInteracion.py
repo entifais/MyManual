@@ -63,6 +63,7 @@ class dbInteracion():
 		alldata = self.cursor.fetchall()
 		return alldata
 		self.cursor.row_factory = sqlite3.Row
+
 	def getSum(self,row):
 		dbcomand = " SELECT sum({0}) FROM {1} ;".format(row,self.tableName)
 		self.cursor.execute(dbcomand)
@@ -78,9 +79,9 @@ class dbInteracion():
 		self.cursor.execute(dbcomand)
 		self.cursor.connection.commit()
 	def insert(self,dbItems,data,table=None):
-		if table:
+		if table==None:
 			table=self.tableName
-		dbcomand = str("INSERT INTO {0} {1}  VALUES {2} ;".format(tableName,tuple(dbItems),tuple(data)))
+		dbcomand = str("INSERT INTO {0} {1}  VALUES {2};".format(table,tuple(dbItems),tuple(data)))
 		self.cursor.execute(dbcomand)
 		self.cursor.connection.commit()
 	def getDataGasWhere(self,row,equals):

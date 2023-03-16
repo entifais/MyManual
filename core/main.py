@@ -50,6 +50,7 @@ class webpage():
 		if db.findUser(usr) and db.findPassword(protectpwd)  :
 			session['loged'] = True
 			session['user'] = usr
+			session['id'] = db.get_id()
 			session['encpwd'] = encpwd
 			return redirect("/main.html")
 		else:
@@ -64,7 +65,7 @@ class webpage():
 			
 			return render_template("main.html")	
 
-	@app.route(WEBPAGE+"trustslevels.html",)
+	@app.route(WEBPAGE+"trustslevels.html")
 	def trustslevels():
 		return render_template("trustslevels.html")	
 	@app.route(WEBPAGE+"trustslevel1.html", methods = ['GET','POST'])
@@ -75,10 +76,19 @@ class webpage():
 	def touchme():
 		if request.method == "POST":
 			values=multrequest(PART_NAME)
+			print(values)
 			db = dbInteracion(DBNAMESQL)
 			db.connect(PARTS_TABLE)
-			db.insert(,PART_NAME,str(id)+values)
-		return render_template("touchme.html",part_name=PART_NAME)	
+			db.insert(["id"]+PART_NAME,[str(id)]+values)
+		return render_template("touchme.html",part_name=PART_NAME)
+	@app.route(WEBPAGE+"logout.html")
+	def logout():
+		session['loged'] = False
+		session['user'] = None
+		session['id'] = None
+		session['encpwd'] = None
+		return redirect("/login.html")	
+	
 	@app.route(WEBPAGE+'gas/actualisar<string:id>', methods = ['GET','POST'])
 	def update(id):
 		user = session.get('user')
