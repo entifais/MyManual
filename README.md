@@ -8,6 +8,9 @@
 
 **Run:**  
 
-### Made for:
-#### Ethical purpose
-#### Non-ethical purpose
+    python manage.py runserver
+    
+go to [localhost:8000](http://127.0.0.1:8000/admin/)
+    
+add with your user name and password :-)
+    
